@@ -1,0 +1,15 @@
+{
+    "/users/*": {
+        "target": "http://localhost:3000",
+        "secure": false,
+        "changeOrigin": true,
+        "pathRewrite": {
+            "^/library": ""
+        }
+    },
+    "/io/*": {
+        "target": "http://localhost:3001/socket.io/",
+        "secure": false,
+        "ws": true
+    }
+}

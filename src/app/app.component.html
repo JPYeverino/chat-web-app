@@ -1,0 +1,12 @@
+<!-- NG-ZORRO -->
+<nz-layout class="app-wrapper">
+  <app-navbar></app-navbar>
+  <input [(ngModel)]="message" />
+  <button (click)="sendMessage()">Send</button>
+  <nz-content>
+    <div class="w-100">
+      <router-outlet></router-outlet>
+    </div>
+  </nz-content>
+  <nz-footer>Footer</nz-footer>
+</nz-layout>
