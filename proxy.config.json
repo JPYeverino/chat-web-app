@@ -9,7 +9,11 @@
     },
     "/io/*": {
         "target": "http://localhost:3001/socket.io/",
+        "secure": false
+    },
+    "/noti/*": {
+        "target": "http://localhost:3001",
         "secure": false,
-        "ws": true
+        "changeOrigin": true
     }
 }

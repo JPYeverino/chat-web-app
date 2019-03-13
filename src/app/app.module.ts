@@ -19,7 +19,13 @@ import { ProfileComponent } from './components/profile/profile.component';
 registerLocaleData(en);
 import { CommonModule } from '@angular/common';
 import { PrimengModule } from './primeng/primeng.module';
+import { SearchContactsComponent } from './components/search-contacts/search-contacts.component';
+import { ContactListComponent } from './components/search-contacts/contact-list/contact-list.component';
+import { ChatWindowComponent } from './components/chat-window/chat-window.component';
 import { ChatService } from './chat.service';
+import { AuthService } from './auth/auth.service';
+import { AuthGuardService } from './auth/auth-guard.service';
+import { ConversationsComponent } from './components/search-contacts/conversations/conversations.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +35,10 @@ import { ChatService } from './chat.service';
     LoginComponent,
     HomeComponent,
     ProfileComponent,
+    SearchContactsComponent,
+    ContactListComponent,
+    ChatWindowComponent,
+    ConversationsComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +53,8 @@ import { ChatService } from './chat.service';
   providers: [
     CookieService,
     ChatService,
+    AuthService,
+    AuthGuardService,
     { provide: NZ_I18N, useValue: en_US },
     { provide: API_BASE_URL, useFactory: baseUrl},
   ],

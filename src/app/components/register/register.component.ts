@@ -40,7 +40,6 @@ export class RegisterComponent implements OnInit {
       this._userClient.register(registerVm)
           .pipe(catchError((err: ApiException) => throwError(err)))
           .subscribe((user: UserVm) => {
-              console.log(user);
               this._router.navigate(['/login']);
           }, (err: ApiException) => {
               console.log(err);

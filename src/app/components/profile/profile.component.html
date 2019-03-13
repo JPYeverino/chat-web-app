@@ -1,2 +1,24 @@
-<h2>{{ actualUser.firstName | uppercase }}</h2>
-<img src="{{actualUser.avatarUrl}}" alt="">
+<div class="ui-g-12" style="padding: 2em;border-bottom: 1px solid #d9d9d9" *ngIf="appUser$ | async as user">
+    <div class="ui-g-12 ui-md-3" style="text-align:center">
+        <img src="{{user.avatarUrl}}" style="width: 100px">
+    </div>
+    <div class="ui-g-12 ui-md-8 car-details">
+        <div class="ui-g">
+            <div class="ui-g-4 ui-sm-6"><b>Username:</b></div>
+            <div class="ui-g-8 ui-sm-6">{{user.username}}</div>
+
+            <div class="ui-g-4 ui-sm-6"><b>Language:</b> </div>
+            <div class="ui-g-8 ui-sm-6">{{user.language}}</div>
+        </div>
+    </div>
+    <div class="ui-g-12 ui-md-1 search-icon">
+        <button pButton type="button" icon="pi pi-pencil"></button>
+    </div>
+</div>
+
+<div class="ui-g-4">
+    <app-search-contacts></app-search-contacts>
+</div>
+<div class="ui-g-8">
+    <app-chat-window ></app-chat-window>
+</div>

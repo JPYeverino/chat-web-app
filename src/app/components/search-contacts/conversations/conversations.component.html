@@ -1,0 +1,22 @@
+<div *ngIf="(conversations$ | async) as conversations">
+  <table>
+      <tbody>
+        <tr *ngFor="let item of conversations" (click)="onSelect(item.id)">
+          <div class="ui-g-12" style="padding: .5em;border-bottom: 1px solid #d9d9d9">
+            <div class="ui-g-12 ui-md-3" style="text-align:center" >
+                <img src="{{item.participants[0].avatarUrl}}" style="width: 50px">
+            </div>
+            <div class="ui-g-12 ui-md-8 car-details">
+                <div class="ui-g">
+                    <div class="ui-g-6 ui-sm-6"><b>User:</b></div>
+                    <div class="ui-g-6 ui-sm-6">{{item.participants[0].username}}</div>
+                </div>
+            </div>
+            <!-- <div class="ui-g-12 ui-md-1 search-icon">
+                <button pButton type="button" icon="pi pi-user-plus" (click)="addContact($event, contact)"></button>
+            </div> -->
+        </div>
+        </tr>
+      </tbody>
+    </table>
+</div>

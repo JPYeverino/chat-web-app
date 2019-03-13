@@ -23,7 +23,7 @@ export class Client {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/users";
+        this.baseUrl = baseUrl ? baseUrl : "/users";
     }
 
     anonymous(): Observable<void> {
@@ -81,14 +81,12 @@ export class UserClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        // this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/users";
-        this.baseUrl = "/users";
+        this.baseUrl = baseUrl ? baseUrl : "/users";
     }
 
     register(registerVm: RegisterVm): Observable<UserVm> {
         let url_ = this.baseUrl + "/register";
         url_ = url_.replace(/[?&]$/, "");
-        console.log(url_);
 
         const content_ = JSON.stringify(registerVm);
 
@@ -313,6 +311,126 @@ export class UserClient {
         }
         return _observableOf<UserVm>(<any>null);
     }
+
+    userslist(search?: string | null | undefined): Observable<UserVm[]> {
+        let url_ = this.baseUrl + "/users-list?";
+        if (search !== undefined)
+            url_ += "search=" + encodeURIComponent("" + search) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUserslist(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUserslist(<any>response_);
+                } catch (e) {
+                    return <Observable<UserVm[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserVm[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUserslist(response: HttpResponseBase): Observable<UserVm[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(UserVm.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = resultData400 ? ApiException.fromJS(resultData400) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserVm[]>(<any>null);
+    }
+
+    user(array: any): Observable<UserVm> {
+        let url_ = this.baseUrl + "/contacts";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(array);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUser(<any>response_);
+                } catch (e) {
+                    return <Observable<UserVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUser(response: HttpResponseBase): Observable<UserVm> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? UserVm.fromJS(resultData200) : new UserVm();
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = resultData400 ? ApiException.fromJS(resultData400) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserVm>(<any>null);
+    }
 }
 
 export class RegisterVm implements IRegisterVm {
@@ -368,11 +486,8 @@ export class UserVm implements IUserVm {
     updatedAt?: Date | null;
     id?: string | null;
     username!: string;
-    firstName?: string | null;
-    lastName?: string | null;
-    fullName?: string | null;
     avatarUrl?: string | null;
-    role?: UserVmRole | null;
+    language?: string | null;
 
     constructor(data?: IUserVm) {
         if (data) {
@@ -389,11 +504,8 @@ export class UserVm implements IUserVm {
             this.updatedAt = data["updatedAt"] ? new Date(data["updatedAt"].toString()) : <any>null;
             this.id = data["id"] !== undefined ? data["id"] : <any>null;
             this.username = data["username"] !== undefined ? data["username"] : <any>null;
-            this.firstName = data["firstName"] !== undefined ? data["firstName"] : <any>null;
-            this.lastName = data["lastName"] !== undefined ? data["lastName"] : <any>null;
-            this.fullName = data["fullName"] !== undefined ? data["fullName"] : <any>null;
             this.avatarUrl = data["avatarUrl"] !== undefined ? data["avatarUrl"] : <any>null;
-            this.role = data["role"] !== undefined ? data["role"] : <any>null;
+            this.language = data["language"] !== undefined ? data["language"] : <any>null;
         }
     }
 
@@ -410,11 +522,8 @@ export class UserVm implements IUserVm {
         data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>null;
         data["id"] = this.id !== undefined ? this.id : <any>null;
         data["username"] = this.username !== undefined ? this.username : <any>null;
-        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
-        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
-        data["fullName"] = this.fullName !== undefined ? this.fullName : <any>null;
         data["avatarUrl"] = this.avatarUrl !== undefined ? this.avatarUrl : <any>null;
-        data["role"] = this.role !== undefined ? this.role : <any>null;
+        data["language"] = this.language !== undefined ? this.language : <any>null;
         return data; 
     }
 }
@@ -424,11 +533,8 @@ export interface IUserVm {
     updatedAt?: Date | null;
     id?: string | null;
     username: string;
-    firstName?: string | null;
-    lastName?: string | null;
-    fullName?: string | null;
     avatarUrl?: string | null;
-    role?: UserVmRole | null;
+    language?: string | null;
 }
 
 export class ApiException implements IApiException {
@@ -525,11 +631,6 @@ export class LoginVm implements ILoginVm {
 export interface ILoginVm {
     username: string;
     password: string;
-}
-
-export enum UserVmRole {
-    Admin = "Admin", 
-    User = "User", 
 }
 
 export class SwaggerException extends Error {

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UserClient, ApiException, UserVm } from 'src/app/user.api';
 import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { ChatService } from 'src/app/chat.service';
+import { CurrentUserService } from 'src/app/current-user.service';
+// import { ChatService } from 'src/app/chat.service';
 
 
 @Component({
@@ -14,34 +15,20 @@ import { ChatService } from 'src/app/chat.service';
 })
 export class ProfileComponent implements OnInit {
 
-  actualUser: UserVm;
+  appUser$: Observable<UserVm>;
 
-  constructor(
-    private _userClient: UserClient, 
-    private _router: Router, 
-    private cs: CookieService,
-    private chatService: ChatService
-  ) { }
+  constructor( 
+    private _router: Router,
+    private userService: CurrentUserService
+  ) { 
+    this.appUser$ = userService.appUser$
+  }
 
   ngOnInit() {
-    
-    this.getUser();
-    console.log(this.cs.get('SESSIONID'));
-    
+    this.appUser$.subscribe(data => console.log(data.id, "Look for own conversation or create one"));
   }
 
-  getUser() {
-    
-    this._userClient.getuser()
-      .subscribe((user: UserVm) => {
-        this.actualUser = user;
-        this.chatService.sendMessage('connected');
-      });
-    
-    
-  }
 
-    
-  
+
 
 }

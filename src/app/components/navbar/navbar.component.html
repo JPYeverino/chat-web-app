@@ -1,5 +1,5 @@
 <nz-header class="landing-header">
-  <ul nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'">
+  <ul nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'" >
     <li nz-menu-item [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">
       <a [routerLink]="['/']">Home</a>
     </li>
@@ -10,7 +10,7 @@
       <a [routerLink]="['/login']">Login</a>
     </li>
     <li nz-menu-item [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">
-      <a [routerLink]="['/profile']">Profile</a>
+      <a [routerLink]="['/profile']">Dashboard</a>
     </li>
     <li nz-menu-item [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">
       <a (click)="onLogoutClick()">Logout</a>

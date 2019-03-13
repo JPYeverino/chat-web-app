@@ -1,0 +1,16 @@
+<div class="chatbox ui-g-12" *ngIf="appUser$ | async as user">
+  Chat window
+  <div *ngIf="messages$ | async as messagesObs">
+    <div *ngFor="let message of messagesObs" [class.right]="message.author == user.username">
+      {{message.author}}: {{message.content}}
+    </div>
+  </div>
+
+  <div class="input-containter">
+    <input type="text" [(ngModel)]="replyMessage">
+  </div>
+  <div *ngIf="conversation$ | async as conversation">
+      <button class="replayBtn" (click)="reply(conversation.id, user.id)">Send</button>
+  </div>
+  
+</div>

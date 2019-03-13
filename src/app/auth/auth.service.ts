@@ -1,14 +1,39 @@
 import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { UserClient, LoginVm, ApiException } from '../user.api';
+import { BehaviorSubject, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class AuthService {
 
-  constructor(public jwtHelper: JwtHelperService, private cs: CookieService) { }
+  private loggedIn = new BehaviorSubject<boolean>(false);
 
-  public isAuthenticated(): boolean {
-    const token = this.cs.get('SESSIONID')
-    return !this.jwtHelper.isTokenExpired(token);
+  get isLoggedIn() {
+    return this.loggedIn.asObservable();
+  }
+
+  constructor(
+    private userService: UserClient,
+    private _router: Router,
+    private cookieService: CookieService
+  ) { }
+
+  login(user: LoginVm) {
+    
+    this.userService.login(user)
+      .pipe(catchError((err: ApiException) => throwError(err)))
+      .subscribe((data) => {
+        this.loggedIn.next(true);
+        this._router.navigate(['/profile']);
+      }, (err: ApiException) => {
+        console.log(err);
+      });
+  }
+
+  logout() {
+    this.loggedIn.next(false);
+    this._router.navigate(['/login']);
   }
 }
