@@ -26,6 +26,8 @@ import { ChatService } from './chat.service';
 import { AuthService } from './auth/auth.service';
 import { AuthGuardService } from './auth/auth-guard.service';
 import { ConversationsComponent } from './components/search-contacts/conversations/conversations.component';
+import { FriendsListComponent } from './components/search-contacts/friends-list/friends-list.component';
+
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { ConversationsComponent } from './components/search-contacts/conversatio
     ContactListComponent,
     ChatWindowComponent,
     ConversationsComponent,
+    FriendsListComponent
   ],
   imports: [
     BrowserModule,

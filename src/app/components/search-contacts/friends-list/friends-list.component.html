@@ -1,0 +1,21 @@
+<div *ngIf="(contacts$ | async) as contacts">
+  Friends
+    <table>
+        <tbody>
+          <tr class="ui-g-12" *ngFor="let item of contacts" style="padding: 1em;border-bottom: 1px solid #d9d9d9">
+              <td style="text-align:center" class="ui-g-4">
+                  <img src="{{item.avatarUrl}}" style="width: 50px">
+              </td>
+              <td class="ui-g-4">
+                <span>{{item.username}}</span>
+              </td>
+              <td [ngSwitch]="item.status" class="ui-g-4">
+                  <button class="ui-g-12" pButton type="button" *ngSwitchCase="'Pending'" label="Univite" icon="pi pi-user-minus"></button>
+                  <button class="ui-g-12" pButton type="button" *ngSwitchCase="'Invited'" icon="pi pi-check" label="Accept" (click)="confirm(item.id)"></button>
+                  <button class="ui-g-12" pButton type="button" *ngSwitchCase="'Friend'" icon="pi pi-ban" label="Block"></button>
+              </td>
+         
+          </tr>
+        </tbody>
+      </table>
+  </div>

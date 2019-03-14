@@ -23,12 +23,14 @@ export class MessageStoreService {
   }
 
   newMessage(message: MessageVm) {
-    this.messages = [...this.messages, message];
-    this._msgService.newMessage(message).subscribe();
+    this._msgService.newMessage(message)
+    .subscribe(message => {
+      this.messages.push(message)
+    });
     this.refresh();
   }
 
-  loadInitialData(conversation: string) {
+  loadMessages(conversation: string) {
     this._msgService.conversationsMessages(conversation)
       .subscribe( msgs =>{
         this.messages = msgs;

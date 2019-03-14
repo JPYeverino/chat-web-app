@@ -5,6 +5,7 @@ import { throwError, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { CurrentUserService } from 'src/app/current-user.service';
+import { ConversationStoreService } from 'src/app/conversation-store.service';
 // import { ChatService } from 'src/app/chat.service';
 
 
@@ -19,16 +20,13 @@ export class ProfileComponent implements OnInit {
 
   constructor( 
     private _router: Router,
-    private userService: CurrentUserService
-  ) { 
-    this.appUser$ = userService.appUser$
-  }
+    private userService: CurrentUserService,
+    private cnvStore: ConversationStoreService
+  ) { }
 
   ngOnInit() {
-    this.appUser$.subscribe(data => console.log(data.id, "Look for own conversation or create one"));
+    this.appUser$ = this.userService.getUser();
+    this.userService.loadUser();
+    this.cnvStore.loadUserConversations();
   }
-
-
-
-
 }

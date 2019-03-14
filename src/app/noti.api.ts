@@ -246,7 +246,7 @@ export class UserNotiClient {
         return _observableOf<UserContact>(<any>null);
     }
 
-    addContact(addContactVm: AddContactVm): Observable<AddContactVm> {
+    addContact(addContactVm: AddContactVm): Observable<UserVm> {
         let url_ = this.baseUrl + "/noti-user/add-contact";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -269,14 +269,14 @@ export class UserNotiClient {
                 try {
                     return this.processAddContact(<any>response_);
                 } catch (e) {
-                    return <Observable<AddContactVm>><any>_observableThrow(e);
+                    return <Observable<UserVm>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AddContactVm>><any>_observableThrow(response_);
+                return <Observable<UserVm>><any>_observableThrow(response_);
         }));
     }
 
-    protected processAddContact(response: HttpResponseBase): Observable<AddContactVm> {
+    protected processAddContact(response: HttpResponseBase): Observable<UserVm> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -287,7 +287,7 @@ export class UserNotiClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result201: any = null;
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result201 = resultData201 ? AddContactVm.fromJS(resultData201) : new AddContactVm();
+            result201 = resultData201 ? UserVm.fromJS(resultData201) : new UserVm();
             return _observableOf(result201);
             }));
         } else if (status === 400) {
@@ -302,7 +302,7 @@ export class UserNotiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<AddContactVm>(<any>null);
+        return _observableOf<UserVm>(<any>null);
     }
 
     getUserContacts(): Observable<UserVm[]> {
@@ -421,6 +421,69 @@ export class UserNotiClient {
             }));
         }
         return _observableOf<AddContactVm>(<any>null);
+    }
+
+    usersList(search: string): Observable<UserVm[]> {
+        let url_ = this.baseUrl + "/noti-user/users-list?";
+        if (search === undefined || search === null)
+            throw new Error("The parameter 'search' must be defined and cannot be null.");
+        else
+            url_ += "search=" + encodeURIComponent("" + search) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUsersList(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUsersList(<any>response_);
+                } catch (e) {
+                    return <Observable<UserVm[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserVm[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUsersList(response: HttpResponseBase): Observable<UserVm[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(UserVm.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = resultData400 ? ApiException.fromJS(resultData400) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserVm[]>(<any>null);
     }
 }
 
@@ -939,6 +1002,7 @@ export class UserVm implements IUserVm {
     status!: string;
     avatarUrl!: string;
     conversation!: string;
+    contacts!: UserContact[];
 
     constructor(data?: IUserVm) {
         if (data) {
@@ -946,6 +1010,9 @@ export class UserVm implements IUserVm {
                 if (data.hasOwnProperty(property))
                     (<any>this)[property] = (<any>data)[property];
             }
+        }
+        if (!data) {
+            this.contacts = [];
         }
     }
 
@@ -958,6 +1025,11 @@ export class UserVm implements IUserVm {
             this.status = data["status"] !== undefined ? data["status"] : <any>null;
             this.avatarUrl = data["avatarUrl"] !== undefined ? data["avatarUrl"] : <any>null;
             this.conversation = data["conversation"] !== undefined ? data["conversation"] : <any>null;
+            if (data["contacts"] && data["contacts"].constructor === Array) {
+                this.contacts = [];
+                for (let item of data["contacts"])
+                    this.contacts.push(UserContact.fromJS(item));
+            }
         }
     }
 
@@ -977,6 +1049,11 @@ export class UserVm implements IUserVm {
         data["status"] = this.status !== undefined ? this.status : <any>null;
         data["avatarUrl"] = this.avatarUrl !== undefined ? this.avatarUrl : <any>null;
         data["conversation"] = this.conversation !== undefined ? this.conversation : <any>null;
+        if (this.contacts && this.contacts.constructor === Array) {
+            data["contacts"] = [];
+            for (let item of this.contacts)
+                data["contacts"].push(item.toJSON());
+        }
         return data; 
     }
 }
@@ -989,6 +1066,7 @@ export interface IUserVm {
     status: string;
     avatarUrl: string;
     conversation: string;
+    contacts: UserContact[];
 }
 
 export class MessageVm implements IMessageVm {

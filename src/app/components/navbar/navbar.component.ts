@@ -19,12 +19,10 @@ export class NavbarComponent implements OnInit {
     private userService: CurrentUserService,
     private authService: AuthService,
     private cookieService: CookieService
-  ) { 
-    
-  }
+  ) { }
 
   ngOnInit() {
-    this.appUser$ = this.userService.appUser$;
+    this.appUser$ = this.userService.getUser();
     this.isLoggedIn$ = this.authService.isLoggedIn;
 
   }

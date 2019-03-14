@@ -1,6 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UserVm } from 'src/app/user.api';
 import { CurrentUserService } from 'src/app/current-user.service';
+import { Observable } from 'rxjs';
+
+import { AddContactVm } from 'src/app/noti.api';
+import { ConversationStoreService } from 'src/app/conversation-store.service';
+import { ContactsService } from 'src/app/contacts.service';
+import { ChatService } from 'src/app/chat.service';
 
 @Component({
   selector: 'app-contact-list',
@@ -11,30 +17,22 @@ export class ContactListComponent implements OnInit {
 
   @Input()
   contacts: UserVm[];
-  
-  @Output() click = new EventEmitter();
 
   constructor(
-    private readonly currentUser: CurrentUserService
+    private readonly currentUser: CurrentUserService,
+    private readonly contactSvs: ContactsService,
+    private readonly _cnvStore: ConversationStoreService,
+    private readonly chat: ChatService
   ) { }
 
   ngOnInit() {
   }
 
-  onSelect(user: UserVm) {
-    let cuser;
-    this.currentUser.appUser$.subscribe(data =>{
-      cuser = data.id;
-    });
-    console.log('Select conversation', JSON.stringify(user));
-    console.log('App user ', cuser);
-
-  }
-
-  addContact(event: Event, user: UserVm) {
-    event.stopPropagation();
-    this.click.next();
-    console.log('Add contact', JSON.stringify(user));
+  addContact(user: UserVm) {
+    const addUser = new AddContactVm();
+    addUser.toAddContact = user.id;
+    this.contactSvs.addContact(addUser);
+    this.contactSvs.loadContacts();
   }
 
 }

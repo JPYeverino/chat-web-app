@@ -37,4 +37,47 @@ export class WebsocketService {
 
     return Subject.create(observer, observable);
   }
+
+  confirmation(): Subject<MessageEvent> {
+
+    let observable = new Observable(observer => {
+      this.socket.on('invitationAccepted', data => {
+        console.log("Received message from Websocket Server");
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      }
+    });
+
+    let observer = {
+      next: (data: Object) => {
+        this.socket.emit('invitationAccepted', JSON.stringify(data));
+      }
+    };
+
+    return Subject.create(observer, observable);
+  }
+
+  invitation(): Subject<MessageEvent> {
+
+    let observable = new Observable(observer => {
+      this.socket.on('invitationReceived', data => {
+        console.log("Received message from Websocket Server");
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      }
+    });
+
+    let observer = {
+      next: (data: Object) => {
+        this.socket.emit('invitationReceived', JSON.stringify(data));
+      }
+    };
+
+    return Subject.create(observer, observable);
+
+  }
 }

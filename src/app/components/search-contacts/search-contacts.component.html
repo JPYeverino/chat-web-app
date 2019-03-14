@@ -1,6 +1,7 @@
 <div>
-  <input type="text" placeholder="Search" id="search">
+  <input type="text" placeholder="Search" id="search" autocomplete="off">
 
 </div>
-<app-contact-list [contacts]="contacts" (click)="onClick($event)"></app-contact-list>
+<app-contact-list *ngIf="contacts.length > 0" [contacts]="contacts" (click)="onClick($event)"></app-contact-list>
 <app-conversations></app-conversations>
+<app-friends-list></app-friends-list>

@@ -1,6 +1,7 @@
 <table>
+  Search app users
   <tbody>
-    <tr *ngFor="let contact of contacts" (click)="onSelect(contact)">
+    <tr *ngFor="let contact of contacts">
       <div class="ui-g-12" style="padding: .5em;border-bottom: 1px solid #d9d9d9">
         <div class="ui-g-12 ui-md-3" style="text-align:center" >
             <img src="{{contact.avatarUrl}}" style="width: 50px">
@@ -12,7 +13,7 @@
             </div>
         </div>
         <div class="ui-g-12 ui-md-1 search-icon">
-            <button pButton type="button" icon="pi pi-user-plus" (click)="addContact($event, contact)"></button>
+            <button pButton type="button" icon="pi pi-user-plus" (click)="addContact(contact)"></button>
         </div>
     </div>
     </tr>

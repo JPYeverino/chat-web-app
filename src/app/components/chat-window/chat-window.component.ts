@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChatService } from 'src/app/chat.service';
 import { CurrentUserService } from 'src/app/current-user.service';
 import { UserVm } from 'src/app/user.api';
 import { Observable } from 'rxjs';
 import { MessageVm, ConversationVm } from 'src/app/noti.api';
-import { ContactsService } from '../search-contacts/contacts.service';
 import { MessageStoreService } from 'src/app/message-store.service';
 import { ConversationStoreService } from 'src/app/conversation-store.service';
 
@@ -22,17 +21,13 @@ export class ChatWindowComponent implements OnInit {
 
   constructor(
     private _userService: CurrentUserService,
-    private _contactService: ContactsService,
     private _msgService: MessageStoreService,
     private _cnvService: ConversationStoreService,
     private chat: ChatService
-  ) {
-    this.appUser$ = _userService.appUser$;
-    
+  ) { }
 
-  }
-  //TODO: get conversation through a Service
   ngOnInit() {
+    this.appUser$ = this._userService.getUser();
     this.messages$ = this._msgService.getMessages();
     this.conversation$ = this._cnvService.getConversation();
     this._cnvService.getConversation().subscribe(cnv => {
@@ -40,13 +35,12 @@ export class ChatWindowComponent implements OnInit {
         return
       }
       console.log(cnv.id);
-      this._msgService.loadInitialData(cnv.id);
+      this._msgService.loadMessages(cnv.id);
     });
 
     
     this.chat.messages.subscribe(data=> {
-      console.log(data.conversation);
-      this._msgService.loadInitialData(data.conversation);
+      this._msgService.loadMessages(data.conversation);
     });
     
   }
@@ -62,5 +56,7 @@ export class ChatWindowComponent implements OnInit {
     this._msgService.newMessage(toSendMessage);
     this.replyMessage = "";
   }
+
+ 
 
 }

@@ -7,20 +7,29 @@ import { BehaviorSubject, Observable, Subject, ReplaySubject } from 'rxjs';
 })
 export class CurrentUserService {
   
-  appUser$: Observable<UserVm>;
-  private _appUserSubject = new ReplaySubject<UserVm>(1);
+  private appUserSubject = new BehaviorSubject<UserVm>(null);
+  private appUser: UserVm;
 
   constructor(
     private _userApi: UserClient
-  ) { 
+  ) { }
 
-    this.appUser$ = this._appUserSubject.asObservable();
-
-    this._userApi.getuser()
-      .subscribe(response => {
-        const user: UserVm = response;
-        this._appUserSubject.next(user);
-      });
+  getUser() {
+    return this.appUserSubject.asObservable();
   }
+
+  private refresh() {
+    this.appUserSubject.next(this.appUser);
+  }
+
+  loadUser() {
+    this._userApi.getuser()
+      .subscribe(user => {
+        this.appUser = user;
+        this.refresh();
+      });
+  } 
+
+
   
 }
