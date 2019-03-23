@@ -15,6 +15,8 @@ import { CurrentUserService } from 'src/app/current-user.service';
 export class SearchContactsComponent implements AfterViewInit, OnInit {
   
   contacts: UserVm[];
+  display: boolean = false;
+  friends = [];
 
   constructor(
     private contactsService: ContactsService,
@@ -24,7 +26,7 @@ export class SearchContactsComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    this.contactsService.loadContacts();
+    // this.contactsService.loadContacts(); //Is not neccesary to refresh Friends List
   }
 
   onClick() {
@@ -36,6 +38,10 @@ export class SearchContactsComponent implements AfterViewInit, OnInit {
 
   reload() {
     this.contacts = [];
+  }
+
+  buildGroup() {
+    this.display = true;
   }
 
   ngAfterViewInit(): void {
@@ -53,5 +59,6 @@ export class SearchContactsComponent implements AfterViewInit, OnInit {
       )
 
     search$.subscribe(users => this.contacts = users);
+
   }
 }

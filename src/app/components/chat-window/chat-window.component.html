@@ -1,16 +1,25 @@
 <div class="chatbox ui-g-12" *ngIf="appUser$ | async as user">
-  Chat window
-  <div *ngIf="messages$ | async as messagesObs">
-    <div *ngFor="let message of messagesObs" [class.right]="message.author == user.username">
-      {{message.author}}: {{message.content}}
+  <div *ngIf="conversation$ | async as conversation"> 
+    <span *ngIf="conversation.participants[0].id != user.id">{{conversation.participants[0].username}}</span>
+    <span *ngIf="conversation.participants[1].id != user.id">{{conversation.participants[1].username}}</span>
+  </div>
+  <p-scrollPanel [style]="{width: '100%', height: '500px'}" class='messages-container' #messagesContainer>
+    <div class='message-container'*ngIf="messages$ | async as messagesObs">
+      <div class="message" *ngFor="let message of messagesObs" [class.right]="message.author == user.username">
+        <span>{{message.content}}</span><br>
+        <span>{{message.createdAt | date:'shortTime'}}</span>
+      </div>
     </div>
+  </p-scrollPanel>
+ 
+  <div class="p-grid">
+      <div class="p-col">
+          <input type="text" pInputText [(ngModel)]="replyMessage">
+      </div>
+      <div class="p-col-fixed" style="width:100px">
+          <button pButton class="replayBtn" icon="pi pi-chevron-right" *ngIf="conversation$ | async as conversation" (click)="reply(conversation.id, user.id)"></button>
+      </div>
   </div>
 
-  <div class="input-containter">
-    <input type="text" [(ngModel)]="replyMessage">
-  </div>
-  <div *ngIf="conversation$ | async as conversation">
-      <button class="replayBtn" (click)="reply(conversation.id, user.id)">Send</button>
-  </div>
-  
+
 </div>

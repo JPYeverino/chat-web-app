@@ -12,17 +12,20 @@ import { map } from 'rxjs/operators';
 export class ChatService {
 
   messages: Subject<any>;
-  confirmation: Subject<any>;
   invitation: Subject<any>;
+  confirmation: Subject<any>;
 
   constructor(
     private wsService: WebsocketService
   ) {
-
-    wsService.initSocket();
-
     this.messages = <Subject<any>>wsService
       .message()
+      .pipe(
+        map((response: any): any => response)
+      );
+
+    this.invitation = <Subject<any>>wsService
+      .invitation()
       .pipe(
         map((response: any): any => response)
       );
@@ -32,16 +35,13 @@ export class ChatService {
       .pipe(
         map((response: any): any => response)
       );
-
-    this.invitation = <Subject<any>>wsService
-      .confirmation()
-      .pipe(
-        map((response: any): any => response)
-      );
-
   }
 
   sendMsg(msg) {
     this.messages.next(msg);
+  }
+
+  sendConfirmation() {
+    this.confirmation.next();
   }
 }

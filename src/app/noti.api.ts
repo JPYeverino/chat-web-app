@@ -364,7 +364,7 @@ export class UserNotiClient {
         return _observableOf<UserVm[]>(<any>null);
     }
 
-    setContactStatus(addContactVm: AddContactVm): Observable<AddContactVm> {
+    setContactStatus(addContactVm: AddContactVm): Observable<UserVm> {
         let url_ = this.baseUrl + "/noti-user/friend";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -387,26 +387,26 @@ export class UserNotiClient {
                 try {
                     return this.processSetContactStatus(<any>response_);
                 } catch (e) {
-                    return <Observable<AddContactVm>><any>_observableThrow(e);
+                    return <Observable<UserVm>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AddContactVm>><any>_observableThrow(response_);
+                return <Observable<UserVm>><any>_observableThrow(response_);
         }));
     }
 
-    protected processSetContactStatus(response: HttpResponseBase): Observable<AddContactVm> {
+    protected processSetContactStatus(response: HttpResponseBase): Observable<UserVm> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
+        if (status === 201) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? AddContactVm.fromJS(resultData200) : new AddContactVm();
-            return _observableOf(result200);
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = resultData201 ? UserVm.fromJS(resultData201) : new UserVm();
+            return _observableOf(result201);
             }));
         } else if (status === 400) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
@@ -420,7 +420,7 @@ export class UserNotiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<AddContactVm>(<any>null);
+        return _observableOf<UserVm>(<any>null);
     }
 
     usersList(search: string): Observable<UserVm[]> {

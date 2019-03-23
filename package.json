@@ -25,6 +25,7 @@
     "hammerjs": "^2.0.8",
     "ng-zorro-antd": "^7.0.0-rc.3",
     "ngx-cookie-service": "^2.1.0",
+    "primeflex": "^1.0.0-rc.1",
     "primeicons": "^1.0.0",
     "primeng": "^7.0.5",
     "rxjs": "~6.3.3",

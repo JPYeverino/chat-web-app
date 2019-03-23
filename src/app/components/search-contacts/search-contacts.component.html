@@ -1,7 +1,20 @@
 <div>
-  <input type="text" placeholder="Search" id="search" autocomplete="off">
-
+  <button pButton class="ui-g-4" type="button" (click)="visibleSidebar1 = true" label="Friend list"
+    style="padding: .5em; margin: .5em"></button>
+  <button pButton class="ui-g-4" type="button" (click)="buildGroup()" label="Create group"
+    style="padding: .5em; margin: .5em"></button>
+  <input class="ui-g-12" type="text" placeholder="Search for a new contact" id="search" autocomplete="off">
 </div>
+
 <app-contact-list *ngIf="contacts.length > 0" [contacts]="contacts" (click)="onClick($event)"></app-contact-list>
-<app-conversations></app-conversations>
-<app-friends-list></app-friends-list>
+
+<app-conversations class="ui-g-12"></app-conversations>
+
+<p-sidebar [(visible)]="visibleSidebar1" [baseZIndex]="10000" [style]="{width:'30em'}">
+  <h1 style="font-weight:normal">Friends</h1>
+  <app-friends-list></app-friends-list>
+</p-sidebar>
+
+<p-dialog header="Title" [(visible)]="display" [style]="{width: '400px', height: '300px'}">
+    <input class="ui-g-12" type="text" placeholder="Search for a friend" id="searchFriends" autocomplete="off">
+</p-dialog>

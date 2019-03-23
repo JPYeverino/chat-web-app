@@ -1,7 +1,25 @@
-.right {
-    text-align: right;
-}
 .chatbox {
     border: 1px solid blue;
-    border-radius: 7px;
+}
+.messages-container {
+    border: 1px solid black;
+    display: flex;
+}
+
+.message-container{
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.message.right {
+    text-align: right;
+    border: 1px solid red;
+    align-self: flex-end;
+}
+
+.message {
+    border: 1px solid blue;
+    padding: .5em;
+    margin: .5em;
+    width: 50%;
 }

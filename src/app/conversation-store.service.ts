@@ -45,14 +45,14 @@ export class ConversationStoreService {
 
   newConversation(contactId: AddContactVm) {
     this._cnvService.newConversation(contactId).subscribe(cnv => {
-      this.conversations = [...this.conversations, cnv];
-      this.refreshList()
+      this.loadUserConversations();
     });
   }
 
   loadConversation(conversationId: string) {
     this._cnvService.getConversation(conversationId)
       .subscribe(cnv => {
+        // console.log(cnv)
         this.selectedConversation = cnv;
         this.refreshIndividual()
       });

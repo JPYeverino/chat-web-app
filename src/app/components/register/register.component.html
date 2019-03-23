@@ -1,4 +1,61 @@
-<div nz-row>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <p-panel header="Register">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          Username *:
+        </div>
+        <div class="ui-grid-col-6">
+          <input pInputText type="text" formControlName="username" placeholder="Required - Min(6)" />
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message severity="error" [text]="form.controls['username'].errors['required'] ? 'Username is required' : form.controls['username'].errors['minlength'] ? 'Must be longer than 6 characters' : ''"
+            *ngIf="!form.controls['username'].valid&&form.controls['username'].dirty"></p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          Password *:
+        </div>
+        <div class="ui-grid-col-6">
+          <input pInputText type="password" formControlName="password" placeholder="Required - Min(6)" />
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message severity="error"
+            [text]="form.controls['password'].errors['required'] ? 'Password is required' : form.controls['password'].errors['minlength'] ? 'Must be longer than 6 characters' : ''"
+            *ngIf="!form.controls['password'].valid&&form.controls['password'].dirty"></p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          First Name:
+        </div>
+        <div class="ui-grid-col-6">
+          <input pInputText type="text" formControlName="firstName" placeholder="Required" />
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          Last Name:
+        </div>
+        <div class="ui-grid-col-6">
+          <input pInputText type="text" formControlName="lastName" placeholder="Required" />
+        </div>
+      </div>
+  
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2"></div>
+        <div class="ui-grid-col-6">
+          <button class="ui-grid-col-3" pButton type="submit" label="Submit" [disabled]="!form.valid"></button>
+          <a class="ui-grid-col-8" [routerLink]="['/login']">Switch to Login</a>
+        </div>
+        <div class="ui-grid-col-4"></div>
+      </div>
+     
+    </div>
+  </p-panel>
+</form>
+<!-- <div nz-row>
   <div nz-col nzSpan="12" nzOffset="6">
     <nz-card nzTitle="Register" nzHoverable="true">
       <form nz-form [nzLayout]="'vertical'" [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -57,4 +114,4 @@
       </form>
     </nz-card>
   </div>
-</div>
+</div> -->

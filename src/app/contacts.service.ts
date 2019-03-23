@@ -53,8 +53,7 @@ export class ContactsService {
 
   confirmContact(contactId: AddContactVm) {
     this._notiUser.setContactStatus(contactId)
-      .subscribe();
-      this.refresh();
+      .subscribe(data => this.loadContacts());
   }
 
 }
