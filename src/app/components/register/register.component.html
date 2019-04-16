@@ -2,7 +2,7 @@
   <p-panel header="Register">
     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
       <div class="ui-grid-row">
-        <div class="ui-grid-col-2">
+        <div class="ui-grid-col-2" i18n="User name|Credentials of the user">
           Username *:
         </div>
         <div class="ui-grid-col-6">
@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="ui-grid-row">
-        <div class="ui-grid-col-2">
+        <div class="ui-grid-col-2" i18n="Password|Credentials of the user">
           Password *:
         </div>
         <div class="ui-grid-col-6">
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="ui-grid-row">
-        <div class="ui-grid-col-2">
+        <div class="ui-grid-col-2" i18n>
           First Name:
         </div>
         <div class="ui-grid-col-6">
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="ui-grid-row">
-        <div class="ui-grid-col-2">
+        <div class="ui-grid-col-2" i18n>
           Last Name:
         </div>
         <div class="ui-grid-col-6">
@@ -46,8 +46,8 @@
       <div class="ui-grid-row">
         <div class="ui-grid-col-2"></div>
         <div class="ui-grid-col-6">
-          <button class="ui-grid-col-3" pButton type="submit" label="Submit" [disabled]="!form.valid"></button>
-          <a class="ui-grid-col-8" [routerLink]="['/login']">Switch to Login</a>
+          <button class="ui-grid-col-3" pButton type="submit" i18n-label label="Submit" [disabled]="!form.valid"></button>
+          <a class="ui-grid-col-8" [routerLink]="['/login']" i18n>Switch to Login</a>
         </div>
         <div class="ui-grid-col-4"></div>
       </div>

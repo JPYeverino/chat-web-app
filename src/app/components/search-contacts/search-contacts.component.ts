@@ -17,6 +17,7 @@ export class SearchContactsComponent implements AfterViewInit, OnInit {
   contacts: UserVm[];
   display: boolean = false;
   friends = [];
+  visibleSidebar1: boolean;
 
   constructor(
     private contactsService: ContactsService,

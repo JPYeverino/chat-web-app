@@ -12,11 +12,11 @@
     </div>
   </p-scrollPanel>
  
-  <div class="p-grid">
+  <div class="p-grid" style="padding : .5em">
       <div class="p-col">
-          <input type="text" pInputText [(ngModel)]="replyMessage">
+          <input type="text" pInputText [(ngModel)]="replyMessage" style="width: 100%">
       </div>
-      <div class="p-col-fixed" style="width:100px">
+      <div class="p-col-fixed" style="width:50px">
           <button pButton class="replayBtn" icon="pi pi-chevron-right" *ngIf="conversation$ | async as conversation" (click)="reply(conversation.id, user.id)"></button>
       </div>
   </div>

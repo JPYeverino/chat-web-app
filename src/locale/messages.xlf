@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="e9f37678d4f6a91df9b30cb399d278182cda4084" datatype="html">
+        <source>
+          Username *:
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/components/register/register.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/components/login/login.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">Credentials of the user</note>
+        <note priority="1" from="meaning">User name</note>
+      </trans-unit>
+      <trans-unit id="d8ab2267503c1be49e80bbe08289c7f359c024a4" datatype="html">
+        <source>
+          Password *:
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/components/register/register.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/components/login/login.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <note priority="1" from="description">Credentials of the user</note>
+        <note priority="1" from="meaning">Password</note>
+      </trans-unit>
+      <trans-unit id="1f26507ccd7fddd7a002389a28088732e0c9f407" datatype="html">
+        <source>
+          First Name:
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/components/register/register.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bf7b8aaa48359d420186e51196d2a057a7623733" datatype="html">
+        <source>
+          Last Name:
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/components/register/register.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="71c77bb8cecdf11ec3eead24dd1ba506573fa9cd" datatype="html">
+        <source>Submit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/components/register/register.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/components/login/login.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="84f64f26d4b4e040f0ca418bb766cf2120b052bd" datatype="html">
+        <source>Project Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/components/home/home.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="60a70d9fb62e1a2c53f9f9892bc8f2272a9a6796" datatype="html">
+        <source>Project description</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/components/home/home.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+        <note priority="1" from="description">A description about the development</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

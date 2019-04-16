@@ -12,7 +12,7 @@ export class WebsocketService {
   private socket;
 
   constructor() { 
-    this.socket = io('/notif', { path: this.url });
+    this.socket = io('/notif', {path: this.url});
   }
 
   
